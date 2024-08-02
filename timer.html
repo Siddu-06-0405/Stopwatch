@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        HTML{
+            background-color: #f2f2f2;
+            font-family: 'Ubuntu',sans-serif;
+            overflow: hidden;
+        }
+        .f{
+            background-color: brown;
+            color: #f2f2f2;
+            display: inline;
+            font-size: 8.5rem;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px;
+        }
+        .btn{
+            background-color: brown;
+            color: #f2f2f2;
+            border-radius: 10px;
+            border-color: #f2f2f2;
+            padding: 10px 50px;
+            margin: 50px;
+
+        }
+        #soul{
+            margin-top: 15vh;
+            display: flex;
+            justify-content: center;
+            /* transform: translate(40%); */
+        }
+        @media only screen and (max-width:480px) {
+            .f{
+                /* transform: translateX(-3%); */
+                font-size: 3.5rem;
+            }
+            #soul{
+                margin-top: 2vh;
+            }
+        }
+    </style>
+    <center>
+        <nav><h1 style="color: brown;font-size: 5.5rem;">TIMER</h1></nav>
+        <div id = "soul">
+            <div class="f" id="h">00</div>
+            <div class="f" id="m">00</div>
+            <div class="f" id="s">00</div>
+        </div>
+        <button class="btn" onclick="start()">start</button>
+        <button class="btn" onclick="location.reload()">reset</button>
+        <button class="btn">stop</button>
+        <button class="btn">resume</button>
+    </center>
+    <script>
+        let s = 0;
+        let m = 0;
+        let h = 0;
+        let seconds = document.getElementById("s")
+        let minutes = document.getElementById("m")
+        let hours = document.getElementById("h")
+        function start(){
+            // for(let s=0;s<61;s++){
+                // }
+            let id = setInterval(()=>{    
+                if(s<9){
+                    // if(s=10){
+                    //     s.innerHTML = s;
+                    // }
+                    s++;
+                    seconds.innerHTML=`0${s}`;
+                }
+                else if(s<59){
+                    s++;
+                    seconds.innerHTML=s;
+                }
+                else{
+                    s =0;
+                    id();
+                }
+            },1000)
+            let id2=setInterval(()=>{
+                if(m<9){
+                    m++;
+                    minutes.innerHTML = `0${m}`;
+                }
+                else if(m<59){
+                    m++;
+                    m.innerHTML=m;
+                }
+                else{
+                    m =0;
+                    id2();
+                }
+            },60000)
+            setInterval(()=>{
+                if(h<9){
+                    h++;
+                    hours.innerHTML=`0${h}`;
+                }
+                else{
+                    hours.innerHTML=h;
+                }
+            },3600000)
+        }
+    </script>
+</body>
+</html>
