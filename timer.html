@@ -11,6 +11,10 @@
             background-color: #f2f2f2;
             font-family: 'Ubuntu',sans-serif;
             overflow: hidden;
+            -webkit-user-select: none;  /* Safari */
+            -moz-user-select: none;     /* Firefox */
+            -ms-user-select: none;      /* Internet Explorer/Edge */
+            user-select: none;
         }
         .f{
             background-color: brown;
@@ -27,7 +31,7 @@
             border-radius: 10px;
             border-color: #f2f2f2;
             padding: 10px 50px;
-            margin: 50px;
+            margin: px;
 
         }
         #soul{
@@ -44,6 +48,14 @@
             #soul{
                 margin-top: 2vh;
             }
+            #b{
+                display: flex;
+                flex-direction:column ;
+            }
+            .btn{
+                padding: 20px 10px;
+                margin: 20px;
+            }
         }
     </style>
     <center>
@@ -53,62 +65,71 @@
             <div class="f" id="m">00</div>
             <div class="f" id="s">00</div>
         </div>
-        <button class="btn" onclick="start()">start</button>
-        <button class="btn" onclick="location.reload()">reset</button>
-        <button class="btn">stop</button>
-        <button class="btn">resume</button>
+        <div id="b">
+            <button class="btn" onclick="start()" id="start">start</button>
+            <button class="btn" onclick="location.reload()">reset</button>
+            <button class="btn" onclick="stop()">stop</button>
+            <button class="btn" onclick="resume()">resume</button>
+        </div>
     </center>
     <script>
         let s = 0;
         let m = 0;
         let h = 0;
-        let seconds = document.getElementById("s")
-        let minutes = document.getElementById("m")
-        let hours = document.getElementById("h")
-        function start(){
-            // for(let s=0;s<61;s++){
-                // }
-            let id = setInterval(()=>{    
-                if(s<9){
-                    // if(s=10){
-                    //     s.innerHTML = s;
-                    // }
+        let interval;
+        let isRunning = false;
+        
+        const seconds = document.getElementById("s");
+        const minutes = document.getElementById("m");
+        const hours = document.getElementById("h");
+        
+        function updateDisplay() {
+            seconds.innerHTML = s < 10 ? `0${s}` : s;
+            minutes.innerHTML = m < 10 ? `0${m}` : m;
+            hours.innerHTML = h < 10 ? `0${h}` : h;
+        }
+        
+        function start() {
+            let ss = document.getElementById("start");
+            ss.style.backgroundColor="rgb(182,109,109)"
+            ss.disabled = true;
+            if (!isRunning) {
+                interval = setInterval(() => {
                     s++;
-                    seconds.innerHTML=`0${s}`;
-                }
-                else if(s<59){
-                    s++;
-                    seconds.innerHTML=s;
-                }
-                else{
-                    s =0;
-                    id();
-                }
-            },1000)
-            let id2=setInterval(()=>{
-                if(m<9){
-                    m++;
-                    minutes.innerHTML = `0${m}`;
-                }
-                else if(m<59){
-                    m++;
-                    m.innerHTML=m;
-                }
-                else{
-                    m =0;
-                    id2();
-                }
-            },60000)
-            setInterval(()=>{
-                if(h<9){
-                    h++;
-                    hours.innerHTML=`0${h}`;
-                }
-                else{
-                    hours.innerHTML=h;
-                }
-            },3600000)
+                    if (s == 60) {
+                        s = 0;
+                        m++;
+                        if (m == 60) {
+                            m = 0;
+                            h++;
+                        }
+                    }
+                    updateDisplay();
+                }, 1000);
+                isRunning = true;
+                document.getElementById("startBtn").disabled = true;
+            }
+        }
+        function stop() {
+            clearInterval(interval);
+            isRunning = false;
+            document.getElementById("startBtn").disabled = false;
+        }
+        function resume() {
+            if (!isRunning) {
+                start();
+            }
+        }
+        function reset() {
+            clearInterval(interval);
+            s = 0;
+            m = 0;
+            h = 0;
+            updateDisplay();
+            isRunning = false;
+            document.getElementById("startBtn").disabled = false;
         }
     </script>
+    
 </body>
 </html>
